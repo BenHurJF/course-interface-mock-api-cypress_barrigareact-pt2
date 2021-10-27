@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/BenHurJF/Projeto-Testes-de-Interface-cypress---BarrigaReact#readme",
   "dependencies": {
-    "cypress": "^8.7.0"
+    "cypress": "^8.7.0",
+    "cypress-xpath": "^1.6.2"
   }
 }
