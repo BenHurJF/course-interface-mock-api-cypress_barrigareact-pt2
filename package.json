@@ -1,0 +1,23 @@
+{
+  "name": "projeto-testes-de-interface-cypress---barrigareact",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "./node_modules/.bin/cypress open",
+    "cy:run": "./node_modules/.bin/cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenHurJF/Projeto-Testes-de-Interface-cypress---BarrigaReact.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BenHurJF/Projeto-Testes-de-Interface-cypress---BarrigaReact/issues"
+  },
+  "homepage": "https://github.com/BenHurJF/Projeto-Testes-de-Interface-cypress---BarrigaReact#readme",
+  "dependencies": {
+    "cypress": "^8.7.0"
+  }
+}
