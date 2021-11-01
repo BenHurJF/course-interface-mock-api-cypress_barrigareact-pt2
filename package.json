@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "cy:open": "./node_modules/.bin/cypress open",
-    "cy:run": "./node_modules/.bin/cypress run"
+    "cy": "cypress open",
+    "cy:run": "cypress run"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,6 @@
   "dependencies": {
     "cypress": "^8.7.0",
     "cypress-xpath": "^1.6.2"
-  }
+  },
+  "devDependencies": {}
 }
