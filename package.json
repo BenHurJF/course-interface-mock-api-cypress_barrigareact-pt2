@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "cy": "cypress open",
-    "cy:run": "cypress run"
+    "cy": "./node_modules/.bin/cypress open",
+    "handles": "/node_modules/.bin/cypress run"
   },
   "repository": {
     "type": "git",

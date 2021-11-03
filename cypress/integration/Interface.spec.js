@@ -1,14 +1,5 @@
 /// <reference types="Cypress" />
-import { useFakeXMLHttpRequest } from 'cypress/types/sinon';
 import loc from '../support/locators';
-
-// const res = [ 
-//     {
-//     id : 25541,
-//     nome: "Ben-Hur Jeffer",
-//     token: "String grande mockada para simular o token"
-//     }
-// ]
 
 describe('Cenários de teste', function () {
     before(() => {
@@ -16,11 +7,16 @@ describe('Cenários de teste', function () {
         // cy.intercept('POST', '/signin', { 
         //     response: res
         // })
-        cy.LOGIN(Cypress.env('user_email'), Cypress.env('senha errada'))
+        cy.intercept('POST', '/signin' , {
+                id:1000,
+                nome:"Usuário falso",
+                token:"string grande aceita"
+        } )
+        cy.LOGIN('beiujeffer@hotmail.com', 'senha errada')
         cy.ResetApp()
     })
     beforeEach(() => {
-        cy.get(loc.MENU.HOME).click()
+        // cy.get(loc.MENU.HOME).click()
     })
 
     it('1- Inserindo Conta', () => {
