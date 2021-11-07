@@ -11,9 +11,23 @@ describe('Cenários de teste', function () {
                 id:1000,
                 nome:"Usuário falso",
                 token:"string grande aceita"
-        } )
+        }).as('signin')
+
+        cy.intercept('GET', '/saldo',
+            [
+                {
+                conta_id:99999,
+                conta:"Conta para movimentacoes TESTE MOCK",
+                saldo:"3332.00"
+               },
+               {
+                conta_id:8888,
+                conta:"Conta Banco TESTE MOCK",
+                saldo:"99999999.00"
+               }
+           ]).as('saldo')
         cy.LOGIN('beiujeffer@hotmail.com', 'senha errada')
-        cy.ResetApp()
+        // cy.ResetApp()
     })
     beforeEach(() => {
         // cy.get(loc.MENU.HOME).click()
