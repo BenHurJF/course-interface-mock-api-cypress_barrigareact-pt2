@@ -1,59 +1,68 @@
 /// <reference types="Cypress" />
+import buildEnv from '../support/BUILDeNV.JS';
 import loc from '../support/locators';
 
 describe('Cenários de teste', function () {
-    before(() => {
-        // cy.LOGIN(Cypress.env('user_email'), Cypress.env('user_senha')
-        // cy.intercept('POST', '/signin', { 
-        //     response: res
-        // })
-        cy.intercept('POST', '/signin' , {
-                id:1000,
-                nome:"Usuário falso",
-                token:"string grande aceita"
-        }).as('signin')
-
-        cy.intercept('GET', '/saldo',
-            [
-                {
-                conta_id:99999,
-                conta:"Conta para movimentacoes TESTE MOCK",
-                saldo:"3332.00"
-               },
-               {
-                conta_id:8888,
-                conta:"Conta Banco TESTE MOCK",
-                saldo:"99999999.00"
-               }
-           ]).as('saldo')
-        cy.LOGIN('beiujeffer@hotmail.com', 'senha errada')
-        // cy.ResetApp()
-    })
     beforeEach(() => {
-        // cy.get(loc.MENU.HOME).click()
+        buildEnv()
+        cy.LOGIN('beiujeffer@hotmail.com', 'senha errada')
+    })
+
+    after('', () => {
+        cy.clearLocalStorage()
     })
 
     it('1- Inserindo Conta', () => {
+        cy.intercept('POST', '/contas', { 
+            id:942076, nome:"Exemple add Account testes 1", visivel:true, usuario_id:25541 
+        }).as('criouAccount')
+
         cy.get(`a[class='nav-link dropdown-toggle']`).click()
         cy.get('[href="/contas"]').click()
-        cy.get('input[data-test="nome"]').type('create account')
+
+        cy.intercept('GET', '/contas', [
+            { id:942073, nome:"Carteira Teste", visivel:true, usuario_id:25541 },
+            { id:942074, nome:"Banco conta Real", visivel:true, usuario_id:25541 },
+            { id:942076, nome:"Exemple add Account testes 1", visivel:true, usuario_id:25541 } 
+        ]).as('contasCreate')
+
+        cy.get(`a[class='nav-link dropdown-toggle']`).click()
+        cy.get('[href="/contas"]').click()
+        cy.get('input[data-test="nome"]').type('Exemple add Account testes 1')
         cy.get('.btn').click()
         cy.get('.toast-message', { timeout: 22000 }).should('contain', 'Conta inserida com sucesso')
     })
 
     it('2 - Alterando a conta', () => {
+        cy.intercept('PUT', '/contas/942073',
+            { id:942073, nome:"Conta para saldo 222222", visivel:true, usuario_id:25541 }
+        ).as('putContas')
+
+        cy.intercept('GET', '/contas', [
+            { id: 942073, nome: "Conta para saldo 222222", visivel: true, usuario_id: 25541 },
+            { id: 942074, nome: "Banco conta Real", visivel: true, usuario_id: 25541 },
+            { id: 942076, nome: "Exemple add Account testes 1", visivel: true, usuario_id: 25541 }
+        ]
+        ).as('contasExibirAposPUT')
+
         cy.get(`a[class='nav-link dropdown-toggle']`).click()
         cy.get('[href="/contas"]').click()
-        cy.xpath(loc.ALTERAR.FN_XP_ALTERCONTA('Conta para saldo')).click()
-        cy.get('input[data-test="nome"]').clear().type('Conta para saldo 1')
+        cy.xpath(loc.ALTERAR.FN_XP_ALTERCONTA('Conta para saldo 1')).click()
+        cy.get('input[data-test="nome"]').clear().type('Conta para saldo 222222')
         cy.get('.btn').click()
         cy.get('.toast-message', { timeout: 22000 }).should('contain', 'Conta atualizada com sucesso!')
     })
 
     it('3 - Tentar criar conta já existente', () => {
+        cy.intercept('GET', '/contas', [
+            { id:942073, nome:"Carteira Teste", visivel:true, usuario_id:25541 },
+            { id:942074, nome:"Banco conta Real", visivel:true, usuario_id:25541 },
+            { id:942076, nome:"Exemple add Account testes 1", visivel:true, usuario_id:25541 } 
+        ]).as('CONTAS1')
+
         cy.get(`a[class='nav-link dropdown-toggle']`).click()
         cy.get('[href="/contas"]').click()
-        cy.get('input[data-test="nome"]').type('Conta para movimentacoes')
+        cy.get('input[data-test="nome"]').type('Exemple add Account testes 1')
         cy.get('.btn').click()
         cy.get('.toast-message', { timeout: 22000 }).should('contain', 'Erro: Error: Request failed with status code 400')
     })

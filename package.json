@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "cy": "./node_modules/.bin/cypress open",
+    "cy:open": "./node_modules/.bin/cypress open",
     "handles": "/node_modules/.bin/cypress run"
   },
   "repository": {
