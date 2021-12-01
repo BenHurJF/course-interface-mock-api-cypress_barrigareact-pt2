@@ -6,7 +6,8 @@ const locators = {
         MSG: '.toast-message'
     },
     MENU: {
-         HOME: '[data-test=menu-home]'
+         HOME: '[data-test=menu-home]',
+         EXTRATO: '[data-test=menu-extrato]'
     },
     ALTERAR: {
         FN_XP_ALTERCONTA: name => `//table//td[contains(.,'${name}')]/..//i[@class='far fa-edit']`
@@ -22,7 +23,8 @@ const locators = {
         FN_XP_ASSERT_DESC: DESC => `//li//span[contains(.,'${DESC}')]`,
         FN_XP_ASSERT_VALUE: value => `//li//span[contains(.,'Testes beiu Extratooo 123')]/following-sibling::small[contains(.,'${value}')]`,
         FN_XP_REMOVER_ELEMENTO: conta => `//span[contains(.,'${conta}')]/../../..//i[@class='far fa-trash-alt']`,
-        FN_XP_ALTERAR_ELEMENTO: alterar => `//span[contains(.,'${alterar}')]/../../..//i[@class='fas fa-edit']`
+        FN_XP_ALTERAR_ELEMENTO: alterar => `//span[contains(.,'${alterar}')]/../../..//i[@class='fas fa-edit']`,
+        FN_XP_LINHA: desc => `//span[contains(.,'${desc}')]/../../../..`
     },
     SALDO: {
         HOME: '[data-test=menu-home]',

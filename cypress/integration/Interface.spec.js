@@ -1,5 +1,4 @@
 /// <reference types="Cypress" />
-import { requests } from 'cypress/types/sinon';
 import buildEnv from '../support/BUILDeNV.JS';
 import loc from '../support/locators';
 
@@ -12,6 +11,10 @@ describe('Cenários de teste', function () {
     after('', () => {
         cy.clearLocalStorage()
     })
+
+    // afterEach('', () => {
+    //     cy.clearLocalStorage()
+    // })
 
     it('1- Inserindo Conta', () => {
         cy.intercept('POST', '/contas', { 
@@ -158,12 +161,13 @@ describe('Cenários de teste', function () {
     //     cy.get('.toast-message').should('contain', 'Movimentação removida com sucesso!')
     // })
 
-    it.only('6- Inserir Conta: VALIDAÇÃO', () => {
+    it('6- Inserir Conta: VALIDAÇÃO', () => {
         cy.intercept('POST', '/contas', { 
             id:942076, nome:"", visivel:true, usuario_id:25541,
             onRequest: req => {
                 console.log(req)
-                expect(req.request.body.nome).to.be.not.null
+                expect(req.request.body.nome).to.be.empty
+
             }
         }).as('criouAccount')
         
@@ -181,7 +185,33 @@ describe('Cenários de teste', function () {
         cy.get('input[data-test="nome"]').type('{CONTROL}')
         cy.get('.btn').click()
 
-        cy.wait('@criouAccount').its('request.body.nome').should('not.be.empty')
+        cy.wait('@criouAccount').its('request.body.nome').should('to.be.empty')
         cy.get('.toast-message', { timeout: 22000 }).should('contain', 'Conta inserida com sucesso')
+    })
+
+    it('7- Testar cores Layout VALIDAÇÃO', () => {
+        cy.intercept('GET', '/extrato/**',
+         [
+            {"conta":"Conta para movimentacoes","id":836562,"descricao":"Receita Paga","envolvido":"AAA","observacao":null,"tipo":"REC","data_transacao":"2021-11-01T03:00:00.000Z","data_pagamento":"2021-11-01T03:00:00.000Z","valor":"-1500.00","status":true,"conta_id":900218,"usuario_id":25541,"transferencia_id":null,"parcelamento_id":null},
+            {"conta":"Conta com movimentacao","id":836563,"descricao":"Receita Pendente","envolvido":"BBB","observacao":null,"tipo":"REC","data_transacao":"2021-11-01T03:00:00.000Z","data_pagamento":"2021-11-01T03:00:00.000Z","valor":"-1500.00","status":false,"conta_id":900219,"usuario_id":25541,"transferencia_id":null,"parcelamento_id":null},
+            {"conta":"Conta para saldo 1","id":836564,"descricao":"Despesa Paga","envolvido":"CCC","observacao":null,"tipo":"DESP","data_transacao":"2021-11-01T03:00:00.000Z","data_pagamento":"2021-11-01T03:00:00.000Z","valor":"3500.00","status":true,"conta_id":900220,"usuario_id":25541,"transferencia_id":null,"parcelamento_id":null},
+            {"conta":"Conta com movimentacao","id":879999,"descricao":"Despesa Pendente","envolvido":"BenHur Jeffer S","observacao":null,"tipo":"DESP","data_transacao":"2021-11-22T03:00:00.000Z","data_pagamento":"2021-11-22T03:00:00.000Z","valor":"333.99","status":false,"conta_id":900219,"usuario_id":25541,"transferencia_id":null,"parcelamento_id":null}
+        ]
+    )
+
+    cy.get(loc.MENU.EXTRATO).click()
+    cy.xpath(loc.EXTRATO.FN_XP_LINHA('Receita Pendente')).eq(0).should('have.class', 'receitaPendente')
+    cy.xpath(loc.EXTRATO.FN_XP_LINHA('Receita Paga')).eq(0).should('have.class', 'receitaPaga')
+    cy.xpath(loc.EXTRATO.FN_XP_LINHA('Despesa Paga')).eq(0).should('have.class', 'despesaPaga')
+    cy.xpath(loc.EXTRATO.FN_XP_LINHA('Despesa Pendente')).eq(0).should('have.class', 'despesaPendente')
+    })
+
+    it('8- Testar Responsividade VALIDAÇÃO', () => {
+        cy.get('[data-test=menu-home]').should('exist')
+        .and('be.visible')  
+
+        cy.viewport(500, 700)
+        cy.get('[data-test=menu-home]').should('exist')
+        .and('be.not.visible')
     })
 })
