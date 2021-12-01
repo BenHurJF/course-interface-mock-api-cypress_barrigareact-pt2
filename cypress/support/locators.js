@@ -14,13 +14,13 @@ const locators = {
     MOVIMENTACAO: {
         DESCRICAO: '[data-test=descricao]',
         VALOR: '[data-test=valor]',
-        INTERESSADO: '[data-test=envolvido]',
+        INTERESSADO: '#envolvido',
         CONTA: '[data-test=conta]',
         BTN_SALVAR: '.btn-primary',
     },
     EXTRATO: {
         FN_XP_ASSERT_DESC: DESC => `//li//span[contains(.,'${DESC}')]`,
-        FN_XP_ASSERT_VALUE: value => `//li//span[contains(.,'Descrição para TESTE E2E')]/following-sibling::small[contains(.,'${value}')]`,
+        FN_XP_ASSERT_VALUE: value => `//li//span[contains(.,'Testes beiu Extratooo 123')]/following-sibling::small[contains(.,'${value}')]`,
         FN_XP_REMOVER_ELEMENTO: conta => `//span[contains(.,'${conta}')]/../../..//i[@class='far fa-trash-alt']`,
         FN_XP_ALTERAR_ELEMENTO: alterar => `//span[contains(.,'${alterar}')]/../../..//i[@class='fas fa-edit']`
     },
